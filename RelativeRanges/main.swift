@@ -15,6 +15,10 @@ public struct RelativeIndex<C: Collection> {
 			return $0.index(self.value($0), offsetBy: offset, limitedBy: limit) ?? limit
 		}
 	}
+
+	func take(_ count: Int) -> RelativeRange<C> {
+		return RelativeRange(start: self, end: self.offset(count ))
+	}
 }
 
 extension RelativeIndex where C.Element: Equatable {
@@ -77,13 +81,20 @@ public extension RelativeIndex {
 	static func -(lhs: RelativeIndex, rhs: Int) -> RelativeIndex {
 		return lhs.offset(-rhs)
 	}
+
+	static func <|(lhs: RelativeIndex, rhs: Int) -> RelativeRange<C> {
+		return lhs.take(rhs)
+	}
 }
 
+infix operator <|
+
 let str = "12345"
-print(str[.start + 3]!)
-print(str[.start + 2 ..< .end - 1])
-print(str[.findFirst("2") ..< .end - 1])
-print(str[.findFirst("9") + 1 ..< .end - 1])
+print(str[.start + 3]!)							// 4
+print(str[.start + 2 ..< .end - 1])				// 34
+print(str[.findFirst("2") ..< .end - 1])		// 234
+print(str[.findFirst("2") <| 3])				// 234
+print(str[.findFirst("9") + 1 ..< .end - 1])	// Empty string
 
 //
 //precedencegroup RelativeOffsetPrecedence {
