@@ -96,6 +96,8 @@ print(str[.findFirst("2") ..< .end - 1])		// 234
 print(str[.findFirst("2") <| 3])				// 234
 print(str[.findFirst("9") + 1 ..< .end - 1])	// Empty string
 
+print(Array(str.utf8)[1+1])
+print(Array(str.utf8)[.start+1]!)
 //
 //precedencegroup RelativeOffsetPrecedence {
 //	higherThan: RangeFormationPrecedence
